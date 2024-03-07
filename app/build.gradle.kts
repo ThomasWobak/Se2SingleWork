@@ -3,6 +3,9 @@ plugins {
 }
 
 android {
+
+
+
     namespace = "com.example.thomaswobakse2singlework"
     compileSdk = 34
 
