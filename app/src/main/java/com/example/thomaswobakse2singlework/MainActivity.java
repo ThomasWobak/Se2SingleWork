@@ -10,6 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText inputField;
@@ -56,9 +62,50 @@ public class MainActivity extends AppCompatActivity {
 
                 String matrikelnummmer=inputField.getText().toString();
                 if(matrikelnummmer.length()<=MATRIKELNUMMER_MAXIMUM_LENGTH||matrikelnummmer.length()>=MATRIKELNUMMER_MINIMUM_LENGTH){
-
+                    sendMatrikelNummer(matrikelnummmer);
                 }
             }
         });
+    }
+
+    private void sendMatrikelNummer(final String matNr){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket=new Socket(DOMAIN_NAME,PORT);
+
+                    PrintWriter writer=new PrintWriter(socket.getOutputStream(),true);
+                    writer.println(matNr);
+
+                    BufferedReader reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    StringBuilder response=new StringBuilder();
+                    String nextLine;
+
+                    while((nextLine=reader.readLine())!=null){
+                        response.append(nextLine);
+                    }
+                    String result="Antwort vom Server: "+response.toString();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            resultTextView=findViewById(R.id.textView);
+                            resultTextView.setText(result);
+                        }
+                    });
+
+
+                    socket.close();
+
+                } catch (IOException e) {
+                    System.out.println("ERROR");
+                    resultTextView=findViewById(R.id.textView);
+                    resultTextView.setText("Fehler beim Kommunizieren mit Server");
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
+
     }
 }
