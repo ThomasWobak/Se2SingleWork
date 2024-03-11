@@ -43,27 +43,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               String matrikelnummmer=inputField.getText().toString();
-               if(matrikelnummmer.length()<=MATRIKELNUMMER_MAXIMUM_LENGTH||matrikelnummmer.length()>=MATRIKELNUMMER_MINIMUM_LENGTH){
-                   int result=0;
-                   for (int i=0; i<matrikelnummmer.length();i++){
-                       int currentNumber = Integer.parseInt(matrikelnummmer.toString().substring(i, i + 1));
-                       result+=i%2==0? currentNumber :-currentNumber;
-                   }
-                  resultTextView=findViewById(R.id.textView);
-                   resultTextView.setText(""+result);
-               }
+               String matrikelnummer=inputField.getText().toString();
+                try {
+                    if(matrikelnummer.length()<=MATRIKELNUMMER_MAXIMUM_LENGTH||matrikelnummer.length()>=MATRIKELNUMMER_MINIMUM_LENGTH){
+                        int result=0;
+                        for (int i=0; i<matrikelnummer.length();i++){
+                            int currentNumber = Integer.parseInt(matrikelnummer.toString().substring(i, i + 1));
+                            result+=i%2==0? currentNumber :-currentNumber;
+                        }
+                        resultTextView=findViewById(R.id.textView);
+                        resultTextView.setText(""+result);
+                    }
+                } catch (NumberFormatException nfe) {
+                    resultTextView=findViewById(R.id.textView);
+                    resultTextView.setText("Bitte eine Valide Matrikelnummer eingeben!");
+                }
+
             }
         });
         Button buttonServer= (Button) findViewById(R.id.buttonServer);
         buttonServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String matrikelnummmer=inputField.getText().toString();
-                if(matrikelnummmer.length()<=MATRIKELNUMMER_MAXIMUM_LENGTH||matrikelnummmer.length()>=MATRIKELNUMMER_MINIMUM_LENGTH){
-                    sendMatrikelNummer(matrikelnummmer);
+                try {
+                    String matrikelnummmer=inputField.getText().toString();
+                    if(matrikelnummmer.length()<=MATRIKELNUMMER_MAXIMUM_LENGTH||matrikelnummmer.length()>=MATRIKELNUMMER_MINIMUM_LENGTH){
+                        sendMatrikelNummer(matrikelnummmer);
+                    }
+                } catch (NumberFormatException nfe) {
+                    resultTextView=findViewById(R.id.textView);
+                    resultTextView.setText("Bitte eine Valide Matrikelnummer eingeben!");
                 }
+
+
             }
         });
     }
