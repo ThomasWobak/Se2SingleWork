@@ -1,7 +1,6 @@
 package com.example.thomaswobakse2singlework;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.*;
@@ -33,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         inputField= findViewById(R.id.InputMatrikNr);
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button buttonQuer = (Button) findViewById(R.id.buttonQuersumme);
+        buttonQuer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -48,6 +47,17 @@ public class MainActivity extends AppCompatActivity {
                   resultTextView=findViewById(R.id.textView);
                    resultTextView.setText(""+result);
                }
+            }
+        });
+        Button buttonServer= (Button) findViewById(R.id.buttonServer);
+        buttonServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String matrikelnummmer=inputField.getText().toString();
+                if(matrikelnummmer.length()<=MATRIKELNUMMER_MAXIMUM_LENGTH||matrikelnummmer.length()>=MATRIKELNUMMER_MINIMUM_LENGTH){
+
+                }
             }
         });
     }
